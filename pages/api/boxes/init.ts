@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import prisma from 'prisma/db/index';
 import createManyBoxes from 'boxes/crud/createMany';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -32,4 +33,4 @@ async function BoxesInitHandler(req: NextApiRequest, res: NextApiResponse) {
 	}
 }
 
-export default BoxesInitHandler;
+export default withVisitorGuard(BoxesInitHandler);

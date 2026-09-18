@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -21,4 +22,4 @@ async function attemptsPerDayHandler(
 		);
 	}
 }
-export default attemptsPerDayHandler;
+export default withVisitorGuard(attemptsPerDayHandler);

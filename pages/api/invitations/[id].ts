@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import prisma from 'prisma/db/index';
 import { z } from 'zod';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -75,4 +76,4 @@ const InvitationHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 };
 
-export default InvitationHandler;
+export default withVisitorGuard(InvitationHandler);

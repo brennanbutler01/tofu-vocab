@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	Button,
 	Card,
@@ -14,7 +15,57 @@ import Head from 'next/head';
 
 //TODO - type this better. we are only using google right now but we will just keep it
 export default function SignIn({ providers }: { providers: Provider[] }) {
-	console.log('providers', providers);
+	const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
+	if (process.env.NEXT_PUBLIC_VISITOR_DEMO === 'true')
+		return (
+			<Container
+				size="sm"
+				py="xl"
+			>
+				<Title>Try Tofu.Vocab</Title>
+				<Text my="md">
+					Create flashcards, practice Vietnamese and track your
+					progress. No signup needed. Your demo is private, expires
+					after one hour and uses only invented data.
+				</Text>
+				<Button
+					loading={loading}
+					onClick={async () => {
+						setLoading(true);
+						setError('');
+						try {
+							const response = await fetch('/api/demo/session', {
+								method: 'POST',
+							});
+							if (!response.ok)
+								throw new Error(
+									'The demo could not start. Please try again shortly.',
+								);
+							window.location.assign('/flashcards');
+						} catch (error) {
+							setError(
+								error instanceof Error
+									? error.message
+									: 'The demo could not start.',
+							);
+						} finally {
+							setLoading(false);
+						}
+					}}
+				>
+					Start demo
+				</Button>
+				{error && (
+					<Text
+						role="alert"
+						color="red"
+					>
+						{error}
+					</Text>
+				)}
+			</Container>
+		);
 	return (
 		<>
 			<Head>
@@ -78,7 +129,8 @@ export default function SignIn({ providers }: { providers: Provider[] }) {
 }
 
 export async function getServerSideProps() {
-	const providers = await getProviders();
+	const providers =
+		process.env.VISITOR_DEMO === 'true' ? {} : await getProviders();
 	return {
 		props: { providers },
 	};

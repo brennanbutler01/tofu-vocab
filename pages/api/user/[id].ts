@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import { canAccessUser, userUpdateSchema } from 'server/userUpdate';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
@@ -59,4 +60,4 @@ async function UserHandler(req: NextApiRequest, res: NextApiResponse) {
 		}
 	}
 }
-export default UserHandler;
+export default withVisitorGuard(UserHandler);

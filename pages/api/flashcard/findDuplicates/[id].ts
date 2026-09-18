@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import prisma from 'prisma/db/index';
 import flashcardsGet from 'flashcard/crud/getMany';
 import flashcardGet from 'flashcard/crud/getOne';
@@ -7,7 +8,7 @@ import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { HttpMethods, validateHttpMethod } from 'utils/validateHttpMethod';
 import { validateSession } from 'utils/validateSession';
 
-export default async function FindDuplicateFlashcardsHandler(
+async function FindDuplicateFlashcardsHandler(
 	req: NextApiRequest,
 	res: NextApiResponse,
 ) {
@@ -46,3 +47,5 @@ export default async function FindDuplicateFlashcardsHandler(
 		}
 	}
 }
+
+export default withVisitorGuard(FindDuplicateFlashcardsHandler);

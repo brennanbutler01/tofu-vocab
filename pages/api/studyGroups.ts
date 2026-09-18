@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import { groupCreateSchema } from 'server/groupInput';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
@@ -48,4 +49,4 @@ async function studyGroupsHandler(req: NextApiRequest, res: NextApiResponse) {
 		}
 	}
 }
-export default studyGroupsHandler;
+export default withVisitorGuard(studyGroupsHandler);

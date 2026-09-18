@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import { createCardSchema } from 'server/cardInput';
 import { z } from 'zod';
 import { FlashcardSources } from '@prisma/client';
@@ -65,4 +66,4 @@ const FlashcardHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 };
 
-export default FlashcardHandler;
+export default withVisitorGuard(FlashcardHandler);

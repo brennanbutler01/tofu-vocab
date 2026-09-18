@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import { createCardsSchema } from 'server/cardInput';
 import prisma from 'prisma/db/index';
 import createManyFlashcards from 'flashcard/crud/createMany';
@@ -54,4 +55,4 @@ async function CreateManyFlashcardsHandler(
 	}
 }
 
-export default CreateManyFlashcardsHandler;
+export default withVisitorGuard(CreateManyFlashcardsHandler);

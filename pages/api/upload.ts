@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { promises as fs } from 'fs';
 import formidable, { File } from 'formidable';
@@ -9,10 +10,7 @@ import { validateSession } from 'utils/validateSession';
 export const config = { api: { bodyParser: false } };
 export type ImageReturn = { status: 'fail' | 'ok'; message: string };
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method !== 'POST')
 		return res
 			.status(405)
@@ -22,12 +20,10 @@ export default async function handler(
 			.status(401)
 			.json({ status: 'fail', message: 'Please sign in.' });
 	if (!process.env.CLOUDINARY_URL)
-		return res
-			.status(503)
-			.json({
-				status: 'fail',
-				message: 'Image uploads are not configured.',
-			});
+		return res.status(503).json({
+			status: 'fail',
+			message: 'Image uploads are not configured.',
+		});
 	const temporaryPaths: string[] = [];
 	try {
 		const files = await new Promise<File[]>((resolve, reject) => {
@@ -51,12 +47,10 @@ export default async function handler(
 				files[0].mimetype || '',
 			)
 		)
-			return res
-				.status(400)
-				.json({
-					status: 'fail',
-					message: 'Choose one JPEG, PNG or WebP image.',
-				});
+			return res.status(400).json({
+				status: 'fail',
+				message: 'Choose one JPEG, PNG or WebP image.',
+			});
 		// Use the parser-generated path, never a filename supplied by the visitor.
 		const result = await cloudinary.uploader.upload(files[0].filepath, {
 			resource_type: 'image',
@@ -65,15 +59,15 @@ export default async function handler(
 			.status(200)
 			.json({ status: 'ok', message: result.secure_url });
 	} catch {
-		return res
-			.status(400)
-			.json({
-				status: 'fail',
-				message: 'Could not upload that image. Maximum size is 5 MB.',
-			});
+		return res.status(400).json({
+			status: 'fail',
+			message: 'Could not upload that image. Maximum size is 5 MB.',
+		});
 	} finally {
 		await Promise.all(
 			temporaryPaths.map(path => fs.rm(path, { force: true })),
 		);
 	}
 }
+
+export default withVisitorGuard(handler);

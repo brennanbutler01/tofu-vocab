@@ -2,7 +2,7 @@
 
 A Vietnamese vocabulary learning application with personal flashcards, spaced review using five Leitner boxes, study history, and collaborative study groups. Built with Next.js, React, TypeScript, Mantine, Prisma, and PostgreSQL.
 
-This repository is being recovered from its original 2023 implementation. The `portfolio-refresh` branch has a working local build and automated browser coverage. A separate static portfolio demo is available at **https://tofu-vocab-demo.vercel.app**. The original authenticated backend is not production-ready. See [RECOVERY.md](RECOVERY.md) for verification and remaining release work.
+This repository is being recovered from its original 2023 implementation. The `portfolio-refresh` branch has a working local build and automated browser coverage. The hosted visitor version at **https://tofu-vocab-demo.vercel.app** uses the original application and a dedicated PostgreSQL database. Real-user authentication and external provider integrations remain outside the verified demo scope. See [RECOVERY.md](RECOVERY.md) for verification and remaining release work.
 
 ## Local setup
 
@@ -44,22 +44,18 @@ Stop local services with `docker compose stop`. Use `docker compose down` to rem
 
 https://tofu-vocab-demo.vercel.app runs on the personal Vercel Hobby project `tofu-vocab-demo`.
 
-The demo has a dedicated static entrypoint in `portfolio-site/` and UI in `portfolio/`. It reuses the application’s answer checking, box progression, and review selection. Visitors can create, edit, delete, search and flip cards, study, and see session progress. Each tab has its own in-memory sample collection; reload or Reset demo restores it.
+Start a private one-hour session without signing up. Create and edit flashcards, study them, see saved progress, and manage your own study groups. Records survive reloads until expiry or **Reset demo**. Only invented information belongs in this demonstration.
 
-No login, database, API routes, upload, translation calls, or real user records are deployed. Study groups and provider-backed word discovery remain in the original authenticated application and are not simulated in the demo. Git history and source maps are not uploaded.
-
-```sh
-corepack yarn build:portfolio
-corepack yarn test:portfolio
-corepack yarn deploy:portfolio
-```
-
-Deployment requires the personal Vercel CLI login and a gitignored `.vercel/project.json` linked to `tofu-vocab-demo`. The deploy script checks that project and account, then uploads only `portfolio-site/out` using the static Build Output API. `python3 scripts/deploy_portfolio.py --check` validates packaging without uploading.
-
-To verify the live deployment:
+The app runs on the personal Vercel Hobby project with a dedicated Neon free database. Google sign-in, Cloudinary uploads, automatic translation and cross-user invitations are unavailable in visitor mode. Groups remain isolated even when marked public. See [VISITOR-DEMO.md](VISITOR-DEMO.md) for cleanup behavior, limits and verification.
 
 ```sh
-PORTFOLIO_URL=https://tofu-vocab-demo.vercel.app corepack yarn test:portfolio
+corepack yarn test:visitor
+corepack yarn deploy:visitor
+VISITOR_URL=https://tofu-vocab-demo.vercel.app corepack yarn test:visitor
 ```
+
+Deployment uses a gitignored `.vercel/project.json` linked to the dedicated personal project. The script uploads tracked source from a temporary directory outside Git; it does not upload local environment files, history, or build artifacts. Hosted secrets stay in Vercel server settings. Commit new source files before deploying.
+
+The earlier in-memory demo remains available through `build:portfolio` and `test:portfolio` for offline frontend review. The live database-backed application is verified through `test:visitor`.
 
 This public edition starts from clean source without the original Git history or historical screenshots. The affected original repository remains private. See DEPENDENCIES.md and RECOVERY.md for the remaining work before running a real multi-user service.

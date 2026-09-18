@@ -25,3 +25,4 @@ jobs:
       - run: corepack yarn local:setup
       - run: corepack yarn build
       - run: corepack yarn test:browser
+      - run: corepack yarn test:visitor

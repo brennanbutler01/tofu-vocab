@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import getManyStudyGroupFlashcards from 'studyGroupFlashcards/crud/getMany';
@@ -32,4 +33,4 @@ async function StudyGroupFlashcardHandler(
 		);
 	}
 }
-export default StudyGroupFlashcardHandler;
+export default withVisitorGuard(StudyGroupFlashcardHandler);

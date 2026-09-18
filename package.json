@@ -15,7 +15,9 @@
 		"local:setup": "python3 scripts/setup-local.py",
 		"build:portfolio": "next build portfolio-site --webpack",
 		"test:portfolio": "playwright test --config=playwright.portfolio.config.ts",
-		"deploy:portfolio": "yarn build:portfolio && yarn test:portfolio && python3 scripts/deploy_portfolio.py"
+		"deploy:portfolio": "yarn build:portfolio && yarn test:portfolio && python3 scripts/deploy_portfolio.py",
+		"test:visitor": "playwright test --config=playwright.visitor.config.ts",
+		"deploy:visitor": "python3 scripts/deploy_visitor.py"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.10.5",

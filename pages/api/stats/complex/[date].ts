@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]';
@@ -35,4 +36,4 @@ async function StatsHandler(req: NextApiRequest, res: NextApiResponse) {
 	}
 }
 
-export default StatsHandler;
+export default withVisitorGuard(StatsHandler);

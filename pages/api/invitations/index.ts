@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import { z } from 'zod';
 import { randomUUID } from 'crypto';
 import prisma from 'prisma/db/index';
@@ -33,9 +34,8 @@ const InvitationsHandler = async (
 		switch (method) {
 			case HttpMethods.GET:
 				console.log('getting invitations');
-				const invitations = await invitationsGetMany.dbGetInvitations(
-					userId,
-				);
+				const invitations =
+					await invitationsGetMany.dbGetInvitations(userId);
 				res.status(200).json(invitations);
 				break;
 			case HttpMethods.POST:
@@ -83,4 +83,4 @@ const InvitationsHandler = async (
 	}
 };
 
-export default InvitationsHandler;
+export default withVisitorGuard(InvitationsHandler);

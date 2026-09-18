@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import prisma from 'prisma/db/index';
@@ -5,10 +6,7 @@ import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { validateSession } from 'utils/validateSession';
 import { groupEditSchema, groupMembershipSchema } from 'server/groupInput';
 
-export default async function studyGroupHandler(
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
+async function studyGroupHandler(req: NextApiRequest, res: NextApiResponse) {
 	const { userId } = validateSession(
 		await getServerSession(req, res, authOptions),
 	);
@@ -19,7 +17,10 @@ export default async function studyGroupHandler(
 	if (typeof id !== 'string' || !id)
 		return res.status(400).json({ err: 'Group ID required.' });
 	const group = await prisma.studyGroup.findUnique({
-		where: { id },
+		where: {
+			id,
+			...(process.env.VISITOR_DEMO === 'true' ? { ownerId: userId } : {}),
+		},
 		include: {
 			users: { select: { id: true } },
 			flashcards: true,
@@ -35,13 +36,11 @@ export default async function studyGroupHandler(
 			return res
 				.status(403)
 				.json({ err: 'Only the owner can delete a group.' });
-		return res
-			.status(200)
-			.json(
-				await prisma.studyGroup.delete({
-					where: { id, ownerId: userId },
-				}),
-			);
+		return res.status(200).json(
+			await prisma.studyGroup.delete({
+				where: { id, ownerId: userId },
+			}),
+		);
 	}
 	const membership = groupMembershipSchema.safeParse(req.body);
 	if (membership.success) {
@@ -82,3 +81,5 @@ export default async function studyGroupHandler(
 		}),
 	);
 }
+
+export default withVisitorGuard(studyGroupHandler);

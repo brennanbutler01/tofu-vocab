@@ -26,6 +26,9 @@ class GetManyStudyGroups extends StudyGroupCrud {
 	dbGetStudyGroups = async (userId: string) =>
 		await prisma.studyGroup.findMany({
 			where: {
+				...(process.env.VISITOR_DEMO === 'true'
+					? { ownerId: userId }
+					: {}),
 				OR: [
 					{ ownerId: userId },
 					{ allowJoin: true },

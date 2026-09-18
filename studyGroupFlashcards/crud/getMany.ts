@@ -13,6 +13,9 @@ class GetManyStudyGroupFlashcards {
 			where: {
 				studyGroup: {
 					is: {
+						...(process.env.VISITOR_DEMO === 'true'
+							? { ownerId: userId }
+							: {}),
 						OR: [
 							{ allowJoin: true },
 							{

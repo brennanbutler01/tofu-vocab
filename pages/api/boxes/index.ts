@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import createBox from 'boxes/crud/create';
 import getManyBoxes from 'boxes/crud/getMany';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -38,4 +39,4 @@ const BoxesHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 };
 
-export default BoxesHandler;
+export default withVisitorGuard(BoxesHandler);

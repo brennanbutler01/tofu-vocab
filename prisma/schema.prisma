@@ -109,6 +109,7 @@ model User {
   currentStreak    Int              @default(0)
   flashcardSource  FlashcardSources @default(ALL)
   timeZone         String           @default("America/Los_Angeles")
+  demoVisit        DemoVisit?
   accounts         Account[]
   flashcards       Flashcard[]
   receivedInvites  Invitation[]     @relation("recipient")
@@ -167,4 +168,13 @@ enum InvitationStatus {
   PENDING
   ACCEPTED
   DENIED
+}
+
+model DemoVisit {
+  userId String @id
+  expiresAt DateTime @db.Timestamptz(3)
+  requests Int @default(0)
+  writeBytes Int @default(0)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([expiresAt])
 }

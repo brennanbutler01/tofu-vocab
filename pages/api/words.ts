@@ -1,3 +1,4 @@
+import { withVisitorGuard } from 'server/visitor';
 import { getServerSession } from 'next-auth';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { validateSession } from 'utils/validateSession';
@@ -22,4 +23,4 @@ const words = async (req: NextApiRequest, res: NextApiResponse) => {
 	});
 };
 
-export default words;
+export default withVisitorGuard(words);

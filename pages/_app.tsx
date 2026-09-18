@@ -10,6 +10,7 @@ import { Bitter, Mansalva, Raleway } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import { RouterTransition } from '@/components/RouterTransition';
 import { useState } from 'react';
+import { VisitorNotice } from '@/components/VisitorNotice';
 
 // If loading a variable font, you don't need to specify the font weight
 export const mansalva = Mansalva({
@@ -68,7 +69,7 @@ export default function App({
 									: theme.fn.lighten(
 											theme.colors.gray[0],
 											0.05,
-									  ),
+										),
 						},
 					}),
 				}}
@@ -77,6 +78,7 @@ export default function App({
 				<ModalsProvider>
 					<Notifications />
 					<SessionProvider session={session}>
+						<VisitorNotice />
 						<Component {...pageProps} />
 					</SessionProvider>
 				</ModalsProvider>
