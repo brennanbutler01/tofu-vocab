@@ -21,24 +21,24 @@ Final verification passed: isolated local setup, TypeScript checking, 307 unit/c
 
 Original browser specifications outside `__e2e__/recovery` are not claimed as passing. Google OAuth, Cloudinary upload, translation providers, existing-database migrations, production traffic, and high-concurrency updates were not exercised.
 
-## Still required before public release
+## Still required before real-user release
 
 1. Provider revocation and retained-commit cleanup in the private original remain separate incident follow-up. This independent public edition does not import its old history or screenshots.
 2. See DEPENDENCIES.md for the current three advisories in Prisma development tooling. Earlier dependency counts are superseded by the September 18 upgrade.
 
-3. The disposable portfolio mode is now implemented as a separate static export at https://tofu-vocab-demo.vercel.app. Keep the original backend out of that deployment.
+3. The public URL now runs the original application in isolated visitor mode with a dedicated disposable database. Keep ordinary authenticated mode and historical databases out of that deployment.
 4. Review the remaining API behavior, rate limits, account deletion with owned groups, external-provider errors, and concurrent answer/streak consistency before allowing real users. Current regression tests cover specific repaired paths, not a complete security audit.
 5. Continue improving the original authenticated UI. The static portfolio demo has its own responsive layout and a smaller client bundle, and reuses the tested study-domain functions.
 
-## Static portfolio deployment
+## Earlier static portfolio deployment
 
-The dedicated Hobby project publishes only static HTML, CSS and browser JavaScript. It uses no server functions, secrets, accounts or external services. Four browser workflows cover card editing and deletion, answer grading and box progression, per-tab isolation/reload/reset, mobile layout, and rejection of backend/credential paths. Static files were also checked against local environment values before upload.
+The dedicated Hobby project initially published only static HTML, CSS and browser JavaScript. That edition used no server functions, secrets, accounts or external services. Four browser workflows covered card editing and deletion, answer grading and box progression, per-tab isolation/reload/reset, mobile layout, and rejection of backend/credential paths. Static files were also checked against local environment values before upload. The database-backed visitor deployment below now supersedes it; the static build remains for offline review.
 
 All four static-demo browser workflows also passed against the public Vercel URL on September 17, 2026. The Vercel team plan was verified as Hobby before deployment.
 
 ## September 18 dependency and publication pass
 
-Upgraded to Next.js 16.3.4 and Prisma 7.10.0 with its PostgreSQL adapter. Both the original app and static demo build. Historical screenshots were removed from the publication source. See `DEPENDENCIES.md` for the current three Prisma development-tool advisories, which supersede earlier dependency counts. Public hosting remains a separate static demo with synthetic data and no backend credentials. The authenticated legacy app is for local review; the remaining backend and external-provider limitations above still apply.
+Upgraded to Next.js 16.3.4 and Prisma 7.10.0 with its PostgreSQL adapter. Both the original app and static demo build. Historical screenshots were removed from the publication source. See `DEPENDENCIES.md` for the current three Prisma development-tool advisories, which supersede earlier dependency counts. The static demo remains available for offline review; public hosting now uses the database-backed visitor mode below. Real-user authentication and external-provider limitations above still apply.
 
 Public source is published from an independent clean snapshot. Affected original repositories remain private, and their cached historical commits are not imported. Credential revocation is separate from source cleanup.
 
